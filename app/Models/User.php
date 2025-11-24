@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -23,11 +25,31 @@ class User extends Authenticatable
     }
 
     /**
-     * @return BelongsTo<Account,User>
+     * @return HasOneThrough<Account,AccountUser,User>
      */
-    public function personal_account(): BelongsTo
+    public function personal_account(): HasOneThrough
     {
-        return $this->belongsTo(Account::class, 'personal_account_id');
+        return $this->hasOneThrough(Account::class, AccountUser::class,
+            'user_id', // Foreign key on AccountUser table...
+            'id', // Foreign key on Account table...
+            'id', // Local key on User table...
+            'account_id' // Local key on AccountUser table...
+        )->where('account_users.role', 'owner');
+    }
+
+    /**
+     * @return HasManyThrough<Account,AccountUser,User>
+     */
+    public function accounts(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Account::class,
+            AccountUser::class,
+            'user_id', // Foreign key on AccountUser table...
+            'id', // Foreign key on Account table...
+            'id', // Local key on User table...
+            'account_id' // Local key on AccountUser table...
+        );
     }
 
     /**
