@@ -12,10 +12,12 @@ class UserObserver
     public function created(User $user): void
     {
         // Create a personal account for the user upon creation
-        $user->accounts()->create([
+        $user->personal_account()->create([
             'name' => $user->name."'s account",
             'owner_id' => $user->id,
         ]);
+        $user->default_account = $user->personal_account;
+        $user->save();
     }
 
     /**
