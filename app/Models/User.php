@@ -39,7 +39,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Account::class)
             ->using(AccountUser::class)
-            ->withPivot('role')
+            ->withPivot('role', 'is_personal')
             ->withTimestamps();
     }
 
