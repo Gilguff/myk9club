@@ -9,6 +9,8 @@ class AccountUser extends Pivot
 {
     use HasUuids;
 
+    protected $keyType = 'string';
+
     protected $fillable = [
         'account_id',
         'user_id',
@@ -16,5 +18,7 @@ class AccountUser extends Pivot
         'is_personal',
     ];
 
-    protected $keyType = 'string';
+    protected $casts = [
+        'is_personal' => 'boolean',
+    ];
 }

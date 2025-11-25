@@ -20,7 +20,7 @@ class UserObserver
         // Attach the personal account to the user with 'owner' role
         $user->accounts()->attach($personal_account->id, [
             'role' => 'owner',
-            'is_personal' => true,
+            'is_personal' => 1,
         ]);
 
         // Set the user's default account to the personal account

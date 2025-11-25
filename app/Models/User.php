@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -29,10 +28,9 @@ class User extends Authenticatable
     /**
      * @return HasOne<Account,AccountUser,User>
      */
-    public function personal_account(): HasOneThrough
+    public function personal_account(): BelongsToMany
     {
-        return $this->hasOneThrough(Account::class, AccountUser::class, 'user_id', 'id', 'id', 'account_id')
-            ->where('account_user.is_personal', true);
+        return $this->accounts()->wherePivot('is_personal', true);
     }
 
     public function accounts(): BelongsToMany

@@ -23,7 +23,7 @@ class Account extends Model
     {
         return $this->belongsToMany(User::class)
             ->using(AccountUser::class)
-            ->withPivot('role')
+            ->withPivot('role', 'is_personal')
             ->withTimestamps()
             ->wherePivot('role', 'owner')
             ->limit(1);
@@ -36,7 +36,7 @@ class Account extends Model
     {
         return $this->belongsToMany(User::class)
             ->using(AccountUser::class)
-            ->withPivot('role')
+            ->withPivot('role', 'is_personal')
             ->withTimestamps();
     }
 
@@ -47,7 +47,6 @@ class Account extends Model
     ];
 
     protected $casts = [
-        'is_personal' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
