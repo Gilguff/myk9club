@@ -27,4 +27,6 @@ class Account extends Model
         'slug',
         'owner_id',
     ];
+
+    protected $keyType = 'string';
 }

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
             $table->string('name');
             $table->string('slug')->unique()->default(str()->random(8));
-            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('owner_id')->constrained('users')->onDelete('cascade');
             $table->softDeletes();
         });
     }

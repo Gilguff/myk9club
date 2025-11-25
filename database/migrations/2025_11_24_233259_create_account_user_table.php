@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('account_users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('account_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        Schema::create('account_user', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('account_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
             $table->string('role')->default('member'); // e.g., 'owner', 'admin', 'member'
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('account_users');
+        Schema::dropIfExists('account_user');
     }
 };

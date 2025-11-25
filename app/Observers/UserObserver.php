@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Models\AccountUser;
 use App\Models\User;
 
 class UserObserver
@@ -14,17 +13,16 @@ class UserObserver
     {
         // Create a personal account for the user upon creation
         $personal_account = $user->personal_account()->create([
-            'name' => $user->name."'s Personal Account",
+            'name' => $user->name."'s Account",
             'owner_id' => $user->id,
         ]);
 
         // Set the user's default account to the personal account
-        $user->default_account = $personal_account;
+        $user->default_account()->associate($personal_account);
 
         // Create the account user pivot record with 'owner' role
-        AccountUser::create([
-            'account_id' => $personal_account->id,
-            'user_id' => $user->id,
+
+        $user->accounts()->attach($personal_account->id, [
             'role' => 'owner',
         ]);
 

@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +16,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, HasUuids, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * @return BelongsTo<Account,User>
@@ -33,19 +34,12 @@ class User extends Authenticatable
         return $this->hasOne(Account::class, 'owner_id');
     }
 
-    /**
-     * @return HasManyThrough<Account,AccountUser,User>
-     */
-    public function accounts(): HasManyThrough
+    public function accounts(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            Account::class,
-            AccountUser::class,
-            'user_id', // Foreign key on AccountUser table...
-            'id', // Foreign key on Account table...
-            'id', // Local key on User table...
-            'account_id' // Local key on AccountUser table...
-        );
+        return $this->belongsToMany(Account::class)
+            ->using(AccountUser::class)
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     /**
@@ -70,6 +64,8 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'remember_token',
     ];
+
+    protected $keyType = 'string';
 
     /**
      * Get the attributes that should be cast.
