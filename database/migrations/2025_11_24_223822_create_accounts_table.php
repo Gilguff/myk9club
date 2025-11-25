@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->timestamps();
             $table->string('name');
             $table->string('slug')->unique()->default(str()->random(8));
-            $table->foreignUuid('owner_id')->constrained('users')->onDelete('cascade');
+            $table->boolean('is_personal')->default(false);
+            $table->timestamps();
             $table->softDeletes();
         });
     }

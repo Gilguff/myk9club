@@ -27,11 +27,12 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasOneThrough<Account,AccountUser,User>
+     * @return HasOne<Account,AccountUser,User>
      */
-    public function personal_account(): HasOne
+    public function personal_account(): HasOneThrough
     {
-        return $this->hasOne(Account::class, 'owner_id');
+        return $this->hasOneThrough(Account::class, AccountUser::class, 'user_id', 'id', 'id', 'account_id')
+            ->where('account_user.is_personal', true);
     }
 
     public function accounts(): BelongsToMany

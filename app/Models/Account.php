@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
@@ -17,9 +17,14 @@ class Account extends Model
     /**
      * @return BelongsTo<User,Account>
      */
-    public function owner(): HasOne
+    public function owner(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsToMany(User::class)
+            ->using(AccountUser::class)
+            ->withPivot('role')
+            ->withTimestamps()
+            ->wherePivot('role', 'owner')
+            ->limit(1);
     }
 
     /**

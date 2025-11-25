@@ -13,6 +13,7 @@ class AccountUser extends Pivot
         'account_id',
         'user_id',
         'role',
+        'is_personal',
     ];
 
     protected $keyType = 'string';
