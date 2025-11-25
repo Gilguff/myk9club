@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,14 +28,9 @@ class User extends Authenticatable
     /**
      * @return HasOneThrough<Account,AccountUser,User>
      */
-    public function personal_account(): HasOneThrough
+    public function personal_account(): HasOne
     {
-        return $this->hasOneThrough(Account::class, AccountUser::class,
-            'user_id', // Foreign key on AccountUser table...
-            'id', // Foreign key on Account table...
-            'id', // Local key on User table...
-            'account_id' // Local key on AccountUser table...
-        )->where('account_users.role', 'owner');
+        return $this->hasOne(Account::class, 'owner_id');
     }
 
     /**

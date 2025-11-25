@@ -21,4 +21,10 @@ class Account extends Model
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'owner_id',
+    ];
 }
