@@ -14,6 +14,8 @@ class Account extends Model
     /** @use HasFactory<\Database\Factories\AccountFactory> */
     use HasFactory, HasUuids, SoftDeletes;
 
+    protected $keyType = 'string';
+
     /**
      * @return BelongsTo<User,Account>
      */
@@ -44,5 +46,10 @@ class Account extends Model
         'owner_id',
     ];
 
-    protected $keyType = 'string';
+    protected $casts = [
+        'is_personal' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 }
