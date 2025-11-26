@@ -41,6 +41,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function get_personal_account(): Account
+    {
+        return $this->personal_account()->firstOrFail();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
