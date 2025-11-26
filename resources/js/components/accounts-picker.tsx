@@ -4,7 +4,7 @@ export default function AccountsPicker({ accounts }: { accounts: Account[] }) {
     return (
         <>
             {accounts.map((account) => {
-                return <h1> {account.name} </h1>
+                return <h1 key={account.id}> {account.name} </h1>
             })}
         </>
     )
