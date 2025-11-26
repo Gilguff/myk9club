@@ -5,6 +5,12 @@ export interface Auth {
     user: User;
 }
 
+interface BaseModel {
+    id: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface BreadcrumbItem {
     title: string;
     href: string;
@@ -30,14 +36,17 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
-export interface User {
-    id: number;
+export interface User extends BaseModel {
     name: string;
     email: string;
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
-    created_at: string;
-    updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Account extends BaseModel {
+    name: string;
+    slug: string;
+    deleted_at: string;
 }
