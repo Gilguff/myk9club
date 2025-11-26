@@ -49,4 +49,14 @@ export interface Account extends BaseModel {
     name: string;
     slug: string;
     deleted_at: string;
+    pivot: AccountUser;
+}
+
+export interface AccountUser {
+    account_id: string;
+    user_id: string;
+    role: string;
+    is_personal: boolean;
+    created_at: string;
+    updated_at: string;
 }
