@@ -1,7 +1,8 @@
 import { Account, BreadcrumbItem } from "@/types";
 import { index } from "@/routes/accounts";
-import { usePage } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
+import AccountsPicker from "@/components/accounts-picker";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,10 +13,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 
 export default function Accounts({ accounts }: { accounts: Account[] }) {
-    console.log(accounts)
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <p>Hello</p>
+            <Head title="Accounts" />
+
+            <AccountsPicker accounts={accounts} />
         </AppLayout>
     )
 }
